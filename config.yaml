@@ -1,0 +1,15 @@
+mongo:
+  host: localhost:27017
+  db: OpenFoodFacts
+  collection: Predictions
+  drop_columns: ['_id', 'timestamp']
+  package: org.mongodb.spark:mongo-spark-connector:10.0.5
+
+spark:
+  master: local
+  app_name: off
+
+n_samples: 100000
+test_size: 0.2
+random_seed: 42
+plot_path: './plots'
