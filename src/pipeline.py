@@ -1,20 +1,18 @@
 import os
 import sys
 import traceback
-from typing import List, Tuple
+from typing import List
 
+import matplotlib.pyplot as plt
 import yaml
 from pyspark.ml import Pipeline
-from pyspark.ml.clustering import KMeans
-from pyspark.ml.feature import Imputer, StandardScaler, VectorAssembler
-from pyspark.ml.evaluation import ClusteringEvaluator
-from pyspark.ml.functions import array_to_vector
-from pyspark.sql import DataFrame, SparkSession
 from pyspark.ml.classification import LogisticRegression
+from pyspark.ml.evaluation import (ClusteringEvaluator,
+                                   MulticlassClassificationEvaluator,
+                                   RegressionEvaluator)
+from pyspark.ml.functions import array_to_vector
 from pyspark.ml.regression import LinearRegression
-from pyspark.ml.evaluation import MulticlassClassificationEvaluator, RegressionEvaluator
-from pyspark.sql import functions as F
-import matplotlib.pyplot as plt
+from pyspark.sql import DataFrame, SparkSession
 
 SHOW_LOG = True
 
@@ -172,4 +170,4 @@ class SparkPipeline:
         self.fit()
         self.print_metrics_train()
         self.print_metrics_test()
-        #self.spark.stop()
+        # self.spark.stop()
