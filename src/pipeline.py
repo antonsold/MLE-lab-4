@@ -81,10 +81,10 @@ class SparkPipeline:
         plt.savefig(path)
 
     def eda(self):
-        print("Data summary:")
-        self.data.summary().show()
+        print("Data scheme:")
+        self.data.printSchema()
         print("Cluster distribution:")
-        self.data.groupBy("cluster").count().show()
+        self.data.groupBy("cluster").count().orderBy("cluster").show()
 
     def eval_clustering(self) -> None:
         silhouette_score = ClusteringEvaluator(
@@ -116,7 +116,7 @@ class SparkPipeline:
             sys.exit(1)
 
     def predict(self, data: DataFrame) -> DataFrame:
-        return self.model.transform(self.test)
+        return self.model.transform(data)
 
     def print_metrics_train(self):
         print("Train metrics:")
@@ -140,8 +140,11 @@ class SparkPipeline:
         )
 
     def print_metrics_test(self):
-        print("Test metrics:")
         self.test = self.model.transform(self.test)
+        self.test.select(
+            ["product_id", "product_name", "prob", "logreg_pred", "cluster"]
+        ).show(20, False)
+        print("Test metrics:")
         mcl_eval = MulticlassClassificationEvaluator(
             predictionCol="logreg_pred", labelCol="cluster"
         )
